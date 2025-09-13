@@ -5,7 +5,7 @@ In this day where the application grow in complexity and distributed software sy
 
 In short If you have observability setup you can get the Information of internal system such as (application, infrastructure, and networking) with this Information you will get an Insight of your system.
 
-<img width="1024" height="848" alt="Image" src="https://github.com/user-attachments/assets/5d995101-d39f-425a-9b4d-f98396983983" />
+<img width="1500" height="1500" alt="Image" src="https://github.com/user-attachments/assets/fbc8c1ca-2aca-454c-99c2-525f913ee348" />
 
 # There are 3 pillar of Observability (Metric, Logs, and Traces)
 # Metric
@@ -18,3 +18,6 @@ Logging is the practice of recording events that happen within a software applic
 # Traces
 - ```Traces can help "How to fix particular state```
 If you have Traces along with the Logs, so Logs will give you some of information, whereas Traces will give you extensive information to debug, troubleshoot as well as fix your issues.
+
+# The difference between Monitor and Observability
+Observability covers 3 pillars that is Metrics, Logs, and Traces. on the other side Monitoring only cover 1 pillar which is Metrics, along with Metrics if you have alert and Dashboard. if you have these things basically monitoring part. you can record these information in dasboard like grafana.
