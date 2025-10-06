@@ -4,6 +4,12 @@ This project demonstrates how to implement **observability** in microservices by
 You’ll learn how to instrument applications, visualize metrics, collect logs, set up alerts, and trace requests across services.
 
 ---
+# The Process of create Costume Metric
+- ``Instrument`` the Metric
+- ``Set up Prometheus`` or your complete Monitoring
+- ``Service Discovery`` It tells you the service that you want to Identify
+
+These 3 Process is the Process of Create Costume Metric. you can additionally set up an alert with ``Gmail``.
 
 ## 🎛️ What is Instrumentation?
 Instrumentation refers to adding monitoring capabilities to applications, systems, or services.  
