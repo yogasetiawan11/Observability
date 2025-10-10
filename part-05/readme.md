@@ -19,6 +19,9 @@ Elasticsearch: Stores and indexes log data for easy retrieval.
 - Fluentbit: A lightweight log forwarder that collects logs from different sources and sends them to Elasticsearch.
 - Kibana: A visualization tool that allows users to explore and analyze logs stored in Elasticsearch.
 
+# Architecture of Fluentbit
+
+<img width="945" height="486" alt="Image" src="https://github.com/user-attachments/assets/7cfb0f9e-9757-497b-b95b-3a2f8afe7dd0" />
 
 # Set up step by step
 

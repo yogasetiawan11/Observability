@@ -11,9 +11,8 @@ In modern applications, especially microservices architectures, a single user re
 - Optimizing performance: Understand and improve the latency of services.
 
 # Component of Jaeger
-- Jaeger consists of several components:
-- Agent: Collects traces from your application.
+Jaeger consists of several components:
+- Agent: Collects traces from your application only if developer has instrumented tracing in their app.
 - Collector: Receives traces from the agent and processes them.
-- Query: Provides a UI to view traces.
-- Storage: Stores traces for later retrieval (often a database like Elasticsearch).
-
+- Storage/DB: Stores traces for later retrieval (often a database like Elasticsearch) so the collector information can be store in DB. and you need to configure it .
+- UI Query: Provides a UI to view traces. In UI you fire a query to the collector It gets the information trough the elastic search DB and display it to the users.
