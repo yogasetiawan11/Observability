@@ -1,6 +1,9 @@
 # What is Jaeger
 Jaeger is an open-source, end-to-end distributed tracing system used for monitoring and troubleshooting microservices-based architectures. It helps developers understand how requests flow through a complex system, by tracing the path a request takes and measuring how long each step in that path takes.
 
+
+<img width="707" height="500" alt="Image" src="https://github.com/user-attachments/assets/6043645b-994e-42b7-8d23-d45728f7c9cd" />
+
 # Why use jaeger
 In modern applications, especially microservices architectures, a single user request can touch multiple services. When something goes wrong, it’s challenging to pinpoint the source of the problem. Jaeger helps by:
 
