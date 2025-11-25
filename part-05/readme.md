@@ -7,23 +7,26 @@ Logging is crucial for any distribution system, especially for Kubernetes, to mo
 - ``Performance monitoring``: Analyzing can help help to identify the bottlenecks 
 - ``Auditing``:  Logs serve as an audit trail, showing what actions were taken and by whom.
 
+# Why do we need Logging tool
+When we Build our application using ``java -jar`` It will generates raw file that contain Logs for our application, and it's quiet difficult to analyze the logs. And monitoring tools can solve this that demostrate better output for the logs.
+
 # Tools for monitoring Logs
 - Elastic FluenD Kibana
 - Elastic Fluenbit Logstash Kibana
 - Elastic Loggstash Kibana
 - Promtail + Loki + Grafana
 
-# EFK Stack (Elasticsearch, Fluentbit, Kibana)
+# Install EFK Stack (Elasticsearch, Fluentbit, Kibana)
 - EFK is a popular logging stack used to collect, store, and analyze logs in Kubernetes.
 Elasticsearch: Stores and indexes log data for easy retrieval.
 - Fluentbit: A lightweight log forwarder that collects logs from different sources and sends them to Elasticsearch.
 - Kibana: A visualization tool that allows users to explore and analyze logs stored in Elasticsearch.
 
-# Architecture of Fluentbit
+## Architecture of Fluentbit
 
 <img width="945" height="486" alt="Image" src="https://github.com/user-attachments/assets/7cfb0f9e-9757-497b-b95b-3a2f8afe7dd0" />
 
-# Set up step by step
+## Set up step by step
 
 1. Create IAM user for Service Account
 
@@ -117,4 +120,127 @@ kubectl delete -k alerts-alertmanager-servicemonitor-manifest/
 
 
 eksctl delete cluster --name observability
+```
+
+
+# Install ELK (Elastic Loggs Kibana)
+
+# 1. Install and Configure ELK
+## 1.1 Install Java required for (Elastic Search)
+```bash
+sudo apt update && sudo apt install openjdk-17-jre-headless -y
+```
+
+## 1.2 
+```bash
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo aptkey add -
+
+
+sudo apt update
+sudo apt install elasticsearch -y
+```
+
+## 1.3 Configure elastic search
+```bash
+sudo vi /etc/elasticsearch/elasticsearch.yml
+```
+Modify Network host
+```bash
+network.host 0.0.0.0
+
+
+discover.type: single-node
+```
+
+## 1.4 Start and enable elastic search
+```bash
+sudo systemctl start elasticsearch
+sudo systemctl enable elasticsearch
+sudo systemctl status elasticsearch
+```
+
+## 1.5
+```sh
+curl -X GET "http://localhost:9200"
+```
+
+# 2. Install and Configure Logstash (Server)
+## 2.1 Install Logstash 
+```sh
+sudo apt install logstash -y
+```
+
+## 2.2 Configure Logstash to accept Logs
+```bash
+sudo vi /etc/logstash/conf.d/logstach.conf
+
+
+# Copy and paste this:
+
+input {
+  beats {
+    port => 5044
+  }
+}
+
+filter {
+  grok {
+    match => { "message" => "%{TIMESTAMP_ISO8601:log_timestamp} %{LOGLEVEL:log_level} %{GREEDYDATA:log_message}" }
+  }
+}
+
+output {
+  elasticsearch {
+    hosts => ["http://localhost:9200"]
+    index => "logs-%{+YYYY.MM.dd}"
+  }
+  stdout { codec => rubydebug }
+}
+
+
+```
+
+## 2.3 start and enable Logstash
+```sh
+sudo systemctl start logstash
+sudo systemctl enable logstash
+sudo systemctl status logstash
+```
+
+## 2.4 Allow traffic on port 5044
+
+# 3. Install Kibana & Configure Kibana
+## 3.1 Install kibana
+```sh
+sudo apt install kibana -y
+```
+
+## 3.2 Configure Kibana 
+```sh
+sudo vi /etc/kibana/kibana.yml
+
+
+# Modify 
+server.host: "0.0.0.0"
+
+
+elasticsearch.hosts: ["http://localhost:9200"]
+```
+
+## 3.3 Start and Enable Kibana
+```sh
+sudo systemctl start kibana
+sudo systemctl enable kibana
+sudo systemctl status kibana
+```
+
+## 3.4 Allow traffic on Port 5601
+```sh
+sudo ufw allow 5601/tcp
+```
+
+## 3.5 Access Kibana Dashboard
+```sh
+http://<ELK_Server_Public_IP>:5601
+
 ```
