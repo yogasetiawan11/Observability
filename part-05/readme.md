@@ -244,3 +244,51 @@ sudo ufw allow 5601/tcp
 http://<ELK_Server_Public_IP>:5601
 
 ```
+
+
+
+## 4. Install example java application
+## 4.1 Download & Run Sample Java App
+```sh
+sudo apt install openjdk-17-jdk -y
+```
+```sh 
+wget https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-sample-simple/1.4.2.RELEASE/spring-boot-sample-simple-1.4.2.RELEASE.jar -O app.jar
+```
+```sh
+nohup java -jar app.jar > /home/ubuntu/Boardgame/target/app.log 2>&1 &
+```
+```sh
+nohup java -jar your-file.jar > /home/ubuntu/Boardgame/target/app.log 2>&1 &
+```
+
+## 4.2 Generate Logs for testing
+```sh
+echo "Test log entry $(date)" >> /home/ubuntu/Boardgame/target/app.log
+```
+
+
+# 5. Configure filebeat to receive the logs
+## 5.1 Install filebeat (Fisrtly build your app)
+```sh
+wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-7.x.list
+sudo apt update
+sudo apt install filebeat -y
+
+```
+## 5.2 Configure the app with ELK 
+```sh 
+sudo vi /etc/filebeat/filebeat.yml
+```
+put this inside the filebeat.yml
+```sh
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - /home/ubuntu/Boardgame/target/app.log
+
+output.logstash:
+  hosts: ["<ELK_Server_Private_IP>:5044"]
+```
